@@ -7,35 +7,36 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
 // include_once('lib/header.php'); 
 
 ?>
-   
-<h3>Login</h3>
+<div class="login">
     <p>
         <?php 
             if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
-                echo "<span style='color:green'>" . $_SESSION['message'] . "</span>";
+                echo "<p class='info'>" . $_SESSION['message'] . "</p>";
                 session_destroy();
             }
         ?>
     </p>
     <form method="POST" action="processlogin.php">
-    <p>
+	 <fieldset>
+	  <legend><h1>Log In</h1></legend>
+      <p>
         <?php 
             if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
-                echo "<span style='color:red'>" . $_SESSION['error'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['error'] . "</p>";
 
                 session_destroy();
             }
 			
             if(isset($_SESSION['emailerr']) && !empty($_SESSION['emailerr'])){
-                echo "<span style='color:red'>" . $_SESSION['emailerr'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['emailerr'] . "</p>";
                 session_unset();
             }
             if(isset($_SESSION['emailerrfmt']) && !empty($_SESSION['emailerrfmt'])){
-                echo "<span style='color:red'>" . $_SESSION['emailerrfmt'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['emailerrfmt'] . "</p>";
                 session_unset();
             }
             if(isset($_SESSION['passworderr']) && !empty($_SESSION['passworderr'])){
-                echo "<span style='color:red'>" . $_SESSION['passworderr'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['passworderr'] . "</p>";
                 session_unset();
             }
         ?>
@@ -63,5 +64,7 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
         <p>
             <button type="submit">Login</button>
         </p>
+	  </fieldset>
     </form>
+
 <?php include_once('lib/footer.php'); ?>
