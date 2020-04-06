@@ -1,8 +1,9 @@
 <?php  include_once('lib/header.php');  ?>
+<div class="login">
     <p>
         <?php 
             if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
-                echo "<span style='color:green'>" . $_SESSION['message'] . "</span>";
+                echo "<p class='info'>" . $_SESSION['message'] . "</span>";
                 session_destroy();
             }
         ?>
