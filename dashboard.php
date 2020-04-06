@@ -11,10 +11,9 @@ $countAllUserslogin = count($allUserslogin);
 for ($counter = 0; $counter < $countAllUserslogin ; $counter++) {
    
     $currentUserlogin = $allUserslogin[$counter];
-	$currentUserlogin == $_SESSION['email'] . ".json";
     $userlogin = file_get_contents("db/login/".$currentUserlogin);
     $userObject = json_decode($userlogin);
-    $dblogin = $userObject->Last_LOGIN;
+    $dblogin = $userObject->last_login;
 	
 }
 /*$date = [
