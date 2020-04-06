@@ -6,75 +6,74 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
 // include_once('lib/header.php');
 
 ?>
-<h3>Register</h3>
-   <p><strong>Welcome, Please Register</strong></p>
-   <p>All Fields are required</p>
-
-
-    <form method="POST" action="processregister.php">
-    <p>
+<div class="login">
+	<form method="POST" action="processregister.php">
+		<fieldset>
+	  		<legend><h1>Register</h1></legend>
+		   		<p>All Fields are required</p>
+		    	<p>
         <?php 
             if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
-                echo "<span style='color:red'>" . $_SESSION['error'] . "</span><br>";
+                echo "<p class='error'>" . $_SESSION['error'] . "</p><br>";
 				session_destroy();
                 // session_unset();
             }
             if(isset($_SESSION['fnerrorempty']) && !empty($_SESSION['fnerrorempty'])){
-                echo "<span style='color:red'>" . $_SESSION['fnerrorempty'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['fnerrorempty'] . "</p>";
 	
                 session_unset();
 				//session_destroy();
             }
             if(isset($_SESSION['fnerrorlen']) && !empty($_SESSION['fnerrorlen'])){
-                echo "<span style='color:red'>" . $_SESSION['fnerrorlen'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['fnerrorlen'] . "</p>";
 	
                 session_unset();
 				//session_destroy();
             }
             if(isset($_SESSION['fnerrorstring']) && !empty($_SESSION['fnerrorstring'])){
-                echo "<span style='color:red'>" . $_SESSION['fnerrorstring'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['fnerrorstring'] . "</p>";
 	
                 session_unset();
 				//session_destroy();
             }
             if(isset($_SESSION['lnerrorempty']) && !empty($_SESSION['lnerrorempty'])){
-                echo "<span style='color:red'>" . $_SESSION['lnerrorempty'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['lnerrorempty'] . "</p>";
 	
                 //session_unset();
 				session_destroy();
             }
             if(isset($_SESSION['lnerrorlen']) && !empty($_SESSION['lnerrorlen'])){
-                echo "<span style='color:red'>" . $_SESSION['lnerrorlen'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['lnerrorlen'] . "</p>";
 	
                 //session_unset();
 				session_destroy();
             }
             if(isset($_SESSION['lnerrorlenstr']) && !empty($_SESSION['lnerrorlenstr'])){
-                echo "<span style='color:red'>" . $_SESSION['lnerrorlenstr'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['lnerrorlenstr'] . "</p>";
 	
                 //session_unset();
 				session_destroy();
             }
             if(isset($_SESSION['passworderr']) && !empty($_SESSION['passworderr'])){
-                echo "<span style='color:red'>" . $_SESSION['passworderr'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['passworderr'] . "</p>";
 	
                 //session_unset();
 				session_destroy();
             }
             if(isset($_SESSION['gendererr']) && !empty($_SESSION['gendererr'])){
-                echo "<span style='color:red'>" . $_SESSION['gendererr'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['gendererr'] . "</p>";
 	
                 //session_unset();
 				session_destroy();
             }
             if(isset($_SESSION['designitureerr']) && !empty($_SESSION['designitureerr'])){
-                echo "<span style='color:red'>" . $_SESSION['designitureerr'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['designitureerr'] . "</p>";
 	
                 //session_unset();
 				session_destroy();
             }
             if(isset($_SESSION['depterr']) && !empty($_SESSION['depterr'])){
-                echo "<span style='color:red'>" . $_SESSION['depterr'] . "</span>";
+                echo "<p class='error'>" . $_SESSION['depterr'] . "</p>";
 	
                 //session_unset();
 				session_destroy();
@@ -175,5 +174,6 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
         <p>
             <button type="submit">Register</button>
         </p>
+		</fieldset>
     </form>
 <?php include_once('lib/footer.php'); ?>
