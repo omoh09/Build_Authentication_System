@@ -4,6 +4,7 @@ $errorCount = 0;
 
 $email = $_POST['email'] != "" ? $_POST['email'] :  $errorCount++;
 $password = $_POST['password'] != "" ? $_POST['password'] :  $errorCount++;
+$lastlog = date("Y-m-d, h:i:sa");
 
 $_SESSION['email'] = $email;
 $emailerr = $emailerrfmt = $passworderr = "";
@@ -49,7 +50,9 @@ if($errorCount > 0){
             $passwrodFromUser = password_verify($password, $passwordFromDB);
             
             if($passwordFromDB == $passwrodFromUser){
-			
+				//last login capture
+				file_put_contents("db/login/". $email . ".json", json_encode(['last_login' => $lastlog]));
+
                 //redicrect to dashboard
                 $_SESSION['first_name'] = $userObject->first_name;
                 $_SESSION['last_name'] = $userObject->last_name;
