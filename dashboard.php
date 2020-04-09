@@ -5,8 +5,8 @@ if(!isset($_SESSION['loggedIn'])){
     header("Location: login.php");
 }
 //LAST LOGIN
-$Userslogin = "db/login/".$_SESSION['email'].".json";
-$userlogin = json_decode(file_get_contents($Userslogin));
+$UserPath = "db/login/".$_SESSION['email'].".json";
+$userlogin = json_decode(file_get_contents($UserPath));
 $dblogin = $userlogin->last_login
 ?>
 <header>
