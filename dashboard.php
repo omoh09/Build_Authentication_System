@@ -4,22 +4,10 @@ if(!isset($_SESSION['loggedIn'])){
     // redirect to dashboard
     header("Location: login.php");
 }
-
-$allUserslogin = scandir("db/login/");
-$countAllUserslogin = count($allUserslogin);
-
-for ($counter = 0; $counter < $countAllUserslogin ; $counter++) {
-   
-    $currentUserlogin = $allUserslogin[$counter];
-    $userlogin = file_get_contents("db/login/".$currentUserlogin);
-    $userObject = json_decode($userlogin);
-    $dblogin = $userObject->last_login;
-	
-}
-/*$date = [
-		'last_login' => date("Y-m-d, h:i:sa")
-	];
-file_put_contents("db/users/". $_SESSION['loggedIn'] . ".json", json_encode($date),FILE_APPEND);*/
+//LAST LOGIN
+$Userslogin = "db/login/".$_SESSION['email'].".json";
+$userlogin = json_decode(file_get_contents($Userslogin));
+$dblogin = $userlogin->last_login
 ?>
 <header>
 		<div class="appname"><a href="index.php">Home</a>&nbsp; |</div> 
