@@ -43,7 +43,8 @@ if($errorCount > 0){
 
         if($currentUser == $email . ".json"){
           //check the user password.
-            $userString = file_get_contents("db/users/".$currentUser);
+            $userString = file_get_contents("db/users/".$currentUser,FILE_APPEND);
+            //$userString = file_get_contents("db/users/".$currentUser);
             $userObject = json_decode($userString);
             $passwordFromDB = $userObject->password;
 
@@ -57,6 +58,7 @@ if($errorCount > 0){
                 $_SESSION['first_name'] = $userObject->first_name;
                 $_SESSION['last_name'] = $userObject->last_name;
                 $_SESSION['department'] = $userObject->department;
+                $_SESSION['designation'] = $userObject->designation;
                 $_SESSION['email'] = $userObject->email;
                 $_SESSION['reg_date'] = $userObject->reg_date;
                 $_SESSION['loggedIn'] = $userObject->id;
