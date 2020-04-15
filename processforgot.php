@@ -1,6 +1,5 @@
 <?php session_start();
-
-//Collecting the data
+include_once('functions/token.php');
 
 $errorCount = 0;
 
@@ -38,7 +37,7 @@ if($errorCount > 0){
           *
           */
 
-          $token = ""; 
+          /*$token = ""; 
 
           $alphabets = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
@@ -46,7 +45,8 @@ if($errorCount > 0){
 
             $index = mt_rand(0,count($alphabets)-1);
             $token .= $alphabets[$index];
-          }
+          }*/
+		  $token = generate_token();
          
           /**
            * Token Generation Ends 
@@ -65,11 +65,11 @@ if($errorCount > 0){
          if($try){
              
 
-             $_SESSION["message"] = "Password reset has been sent to your email: " . $email;
+             $_SESSION["message"] = "<p class='alert alert-success'>Password reset has been sent to your email: " . $email . "</p>";
              header("Location: login.php");
          }else{
              
-             $_SESSION["error"] = "Something went wrong, we could not send password reset to : " . $email;
+             $_SESSION["error"] = "<p class='alert alert-success'>Something went wrong, we could not send password reset to : " . $email . "</p>";
              header("Location: forgot.php");
          }
 
@@ -79,7 +79,7 @@ if($errorCount > 0){
         
     }
 
-    $_SESSION["error"] = "Email not registered with us ERR: " . $email;
+    $_SESSION["error"] = "<p class='alert alert-danger'>Email not registered with us ERR: " . $email . "</p>";
     header("Location: forgot.php");
 
 }

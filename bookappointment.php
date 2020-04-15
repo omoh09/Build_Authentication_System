@@ -1,22 +1,30 @@
 <?php include_once('lib/header.php'); 
+include_once('functions/users.php'); 
+include_once('functions/redirect.php'); 
 
-if(!isset($_SESSION['loggedIn'])){
-    // redirect to dashboard
-    header("Location: login.php");
+if(!is_users_logged_in()){
+    redirect("login.php");
 }
-include_once('lib/dashboardheader.php')
 ?>
 	
-<main>
-<table class="masterlist">
-	<tr>
-		<th>Book an Appointment</th>
-	</tr>
-	
-	<tr>	
-		<td>		
-			<form action="" method="POST">
-				<p>
+<div class="container-fluid">
+  <div class="row">
+  
+<?php require_once("lib/nav_bar.php") ; ?>
+
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+		<h2>Book an Appointment</h2>
+			<div class="table-responsive">
+		        <table class="table table-striped ">
+		          <thead>
+				      <tr>
+						<th>Fill here to book an appointment with a doctor </th>
+					  </tr>
+				  </thead>
+				  <tbody>
+						<tr>	
+							<td>		
+								<form action="" method="POST">
 			        <?php 
 					if(isset($_POST['submit'])){
 						$errorCount = 0;
@@ -59,25 +67,29 @@ include_once('lib/dashboardheader.php')
 					}
 			        ?>
 				</p>
-			    <p>
-			        <label>Nature of appointment</label><br />
-			        <input type="text" name="noa" placeholder="Nature of appointment" />
-			    </p>
-			    <p>
-			        <label>Initial complaint</label><br />
-			        <input type="text" name="ic" placeholder="Initial complaint"  />
-			    </p>
-			    <p>
-			        <label>Department to book the appointment</label><br />
-			        <input type="text" name="dept" placeholder="Department you want to book the appointment for"  />
-			    </p>
-			    <p>
-			        <button name="submit" type="submit">Book Appointment</button>
-			    </p>
-			</form>
-		</td>
-	</tr>
-</table>
+							    <p>
+							        <label>Nature of appointment</label><br />
+							        <input type="text" name="noa" placeholder="Nature of appointment" />
+							    </p>
+							    <p>
+							        <label>Initial complaint</label><br />
+							        <input type="text" name="ic" placeholder="Initial complaint"  />
+							    </p>
+							    <p>
+							        <label>Department to book the appointment</label><br />
+							        <input type="text" name="dept" placeholder="Department you want to book the appointment for"  />
+							    </p>
+							    <p>
+							        <button name="submit" type="submit">Book Appointment</button>
+							    </p>
+							</form>
+						</td>
+					</tr>
+				  </tbody>
 
-</main>
+				</table>
+			</div>
+		</main>
+	</div>
+</div>
 <?php include_once('lib/footer.php'); ?>

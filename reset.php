@@ -1,75 +1,88 @@
 <?php include_once('lib/header.php'); 
+ include_once('functions/alerts.php'); 
+ include_once('functions/users.php'); 
+ include_once('functions/redirect.php'); 
 
-//TODO: Fix session error message display on login page
-
-
-if(!isset($_SESSION['loggedIn']) && !isset($_GET['token']) && !isset($_SESSION['token'])){
+if(!is_users_logged_in() && !is_token_set()){
     $_SESSION["error"] = "You are not authorized to view that page";
-    header("Location: login.php");
-}
-if(isset($_SESSION['loggedIn'])){ 
-	include_once('lib/dashboardheader.php');
-	echo "<main>";
-} else{ ?>
-<div class="login">
-<?php	
+    redirect("login.php");
 }
 ?>
-   <h3>Reset Password</h3>
-   <p>Reset Password associated with your account : [email]</p> 
-   <!-- TODO: Update email above as they enter it (JS) -->
 
-   <form action="processreset.php" method="POST">
-   <p>
-        <?php 
-            if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
-                echo "<span style='color:red'>" . $_SESSION['error'] . "</span>";
-                session_destroy();
-            }
-        ?>
-    </p>
-    <?php if(!isset($_SESSION['loggedIn'])) { ?>
-    <input
-            
-            <?php              
-                if(isset($_SESSION['token'])){
-                    echo "value='" . $_SESSION['token'] . "'";                                                             
-                }else{
-                    echo "value='" . $_GET['token'] . "'";
-                }             
-            ?>
+	
+<div class="container-fluid">
+  <div class="row">
+  <?php if(is_users_logged_in()){ ?>
+<?php require_once("lib/nav_bar.php") ; ?>
 
-           type="hidden" name="token"  />
-    <?php } ?>
+<?php } ?>
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+		<h2>Change Password</h2>
+			<div class="table-responsive">
+		        <table class="table table-striped ">
+		          <thead>
+				      <tr>
+						<th>Reset Password associated with your account : [email]</th>
+					  </tr>
+				   </thead>
+				   <tbody>
+				  	  <tr>
+					  	  <td>
+   
+							<div class="row col-md-6">
+						  		<div class="form-group">
+							   		<form action="processreset.php" method="POST">
+									   <p>
+									        <?php prin_alert();; ?>
+									    </p>
+									    <?php if(!is_users_logged_in()) { ?>
+									    <input
+									            
+									            <?php              
+									                if(is_token_set_in_session()){
+									                    echo "value='" . $_SESSION['token'] . "'";                                                             
+									                }else{
+									                    echo "value='" . $_GET['token'] . "'";
+									                }             
+									            ?>
 
-    <p>
-        <label>Email</label><br />
-        <input
-            
-            <?php              
-                if(isset($_SESSION['email'])){
-                    echo "value=" . $_SESSION['email'];                                                     
-                }               
-                if(isset($_SESSION['loggedIn'])){ 
-				?>
-                    readonly                                                   
-             <?php  
-			  }                
-            ?>
+									           type="hidden" name="token"  />
+									    <?php } ?>
 
-             type="text" name="email" placeholder="Email" />
-    </p>
-    <p>
-        <label>Enter New Password</label><br />
-        <input type="password" name="password" placeholder="Password"  />
-    </p>
-    <p>
-        <button type="submit">Reset Password</button>
-    </p>
-   </form>
- 
-<?php 
-if(isset($_SESSION['loggedIn'])){ 
-	echo "</main>";
-}
-include_once('lib/footer.php'); ?>
+									    <p>
+									        <label>Email</label><br />
+									        <input
+									            
+									            <?php              
+									                if(isset($_SESSION['email'])){
+									                    echo "value=" . $_SESSION['email'];                                                     
+									                }               
+									                if(is_users_logged_in()){ 
+													?>
+									                    readonly                                                   
+									             <?php  
+												  }                
+									            ?>
+
+									             type="text" class="form-control" name="email" placeholder="Email" />
+									    </p>
+									    <p>
+									        <label>Enter New Password</label><br />
+									        <input type="password" class="form-control" name="password" placeholder="Password"  />
+									    </p>
+									    <p>
+									        <button class="btn btn-primary" type="submit">Reset Password</button>
+									    </p>
+								   </form>
+								</div>
+							</div>
+						  </td>
+					  </tr>
+				  </tbody>
+
+				</table>
+			</div>
+		</main>
+	</div>
+</div>
+<?php include_once('lib/footer.php'); ?>

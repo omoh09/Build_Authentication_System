@@ -1,5 +1,5 @@
 <?php session_start();
-
+include_once('functions/users.php');
 //Collecting the data
 
 $errorCount = 0;
@@ -15,14 +15,7 @@ $gender = $_POST['gender'] != "" ? $_POST['gender'] :  $errorCount++;
 $designation = $_POST['designation'] != "" ? $_POST['designation'] :  $errorCount++;
 $department = $_POST['department'] != "" ? $_POST['department'] :  $errorCount++;
 $date = date("Y-m-d, h:i:sa");
-//$_SESSION['first_name'] = $first_name;
-//$_SESSION['last_name'] = $last_name;
-//$_SESSION['email'] = $email;
-//$_SESSION['gender'] = $gender;
-//$_SESSION['designation'] = $designation;
-//$_SESSION['department'] = $department;
 
-//$errorArray = [];
 $fnerrorempty = $fnerrorlen = $fnerrorstring = "";
 $lnerrorempty = $lnerrorlen = $lnerrorlenstr = "";
 $emailerrempty = $emailerrlen = $emailerrfmt = "";
@@ -35,7 +28,6 @@ if($first_name == " "){
 	$fnerrorlen = "Firstname must be greater than 2";
 	$errorCount++;
 }else
-//if(!empty($first_name) && is_numeric($first_name) && ctype_alnum($first_name)){
 if(!empty($first_name) && preg_match("/^[a-zA-Z]+$/", $first_name) === 0){
 	$fnerrorstring = "Firstname requires letters  alone";
 	$errorCount++;
@@ -50,7 +42,6 @@ if($last_name == " "){
 	$lnerrorlen = "lasttname must be greater than 2";
 	$errorCount++;
 }else
-//if(!empty($last_name) && is_numeric($last_name)  && ctype_alnum($first_name)){
 if(!empty($last_name) && preg_match("/^[a-zA-Z]+$/", $last_name) === 0){
 	$lnerrorlenstr = "lasttname requires string alone";
 	$errorCount++;
@@ -131,9 +122,9 @@ if($errorCount > 0){
 }else{
 
     //count all users
-    $allUsers = scandir("db/users/"); //return @array (2 filled)
+    /*$allUsers = scandir("db/users/"); //return @array (2 filled)
 
-    $countAllUsers = count($allUsers);
+    $countAllUsers = count($allUsers);*/
 
     $newUserId = ($countAllUsers-1);
 
@@ -150,21 +141,18 @@ if($errorCount > 0){
     ];
 
     //Check if the user already exists.
- 
-    for ($counter = 0; $counter < $countAllUsers ; $counter++) {
-        
-        $currentUser = $allUsers[$counter];
-
-        if($currentUser == $email . ".json"){
-            $_SESSION["error"] = "Registration Failed, User already exits ";
+ 	$userExist = finduser($email);
+    
+        if($userExist){
+            $_SESSION["error"] = "<p class='alert alert-danger'>Registration Failed, User already exits </p>";
             header("Location: register.php");
             die();
         }
         
-    }
     //save in the database;
-    file_put_contents("db/users/". $email . ".json", json_encode($userObject));
-    $_SESSION["message"] = "Registration Successful, you can now login " . $first_name;
+    //file_put_contents("db/users/". $email . ".json", json_encode($userObject));
+	save_user($userObject);
+    $_SESSION["message"] = "<p class='alert alert-success'>Registration Successful, you can now login " . $first_name / "</p>";
     header("Location: login.php");
 }
 

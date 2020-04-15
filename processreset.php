@@ -1,5 +1,6 @@
 <?php session_start();
-
+//include_once('functions/users.php');
+include_once('functions/alerts.php');
 //Collecting the data
 
 $errorCount = 0;
@@ -18,23 +19,18 @@ $_SESSION['email'] = $email;
 
 if($errorCount > 0){
 
-    $session_error = "You have " . $errorCount . " error";
+    $session_error = "<p class='alert alert-danger'>You have " . $errorCount . " error";
    
    if($errorCount > 1) {        
        $session_error .= "s";
    }
 
-   $session_error .=   " in your form submission";
+   $session_error .=   " in your form submission</p>";
    $_SESSION["error"] = $session_error ;
 
    header("Location: reset.php");
 
 }else{
-    //TODO: do actual reset things here
-
-    //Check that the email is registered in tokens folder
-    //check if the content of the registered token (in our folder), is the same as $token
-
     $allUserTokens = scandir("db/tokens/"); //return @array (2 filled)
     $countAllUserTokens = count($allUserTokens);
 
@@ -53,13 +49,9 @@ if($errorCount > 0){
 
            if($_SESSION['loggedIn']){
                $checkToken = true;
-            //    echo "Got here position 1";
            }else{
                 $checkToken = $tokenFromDB == $token;
-            //    echo "Got here position 2";
-
            }
-        //    die();
 
            if($checkToken){
            
@@ -69,7 +61,7 @@ if($errorCount > 0){
                 for ($counter = 0; $counter < $countAllUsers ; $counter++) {
         
                     $currentUser = $allUsers[$counter];
-            
+            		
                     if($currentUser == $email . ".json"){
                     //check the user password.
                         $userString = file_get_contents("db/users/".$currentUser);
@@ -78,14 +70,11 @@ if($errorCount > 0){
                         $userObject->password = password_hash($password, PASSWORD_DEFAULT);
             
                         unlink("db/users/".$currentUser); //file delete, user data delete
-
+                        unlink("db/token/".$currentUser); //file delete, token data delete
+						//save_user($userObject);
                         file_put_contents("db/users/". $email . ".json", json_encode($userObject));
+						set_alert('message','Password Reset Successful, you can now login');
 
-                        $_SESSION["message"] = "Password Reset Successful, you can now login ";
-
-                        /**
-                         * INFORM USER OF PASSWORD RESET
-                         */
                         $subject = "Password Reset Successful";
                         $message = "Your account on snh has just been updated, your password has changed. if you did not initiate the password change, please visit snh.org and reset your password immediatly";
                         $headers = "From: no-reply@snh.org" . "\r\n" .
@@ -108,6 +97,6 @@ if($errorCount > 0){
         
     }
 
-    $_SESSION["error"] = "Password Reset Failed, token/email invalid or expired";
+	set_alert('error','Password Reset Failed, token/email invalid or expired');
     header("Location: login.php");
 }
