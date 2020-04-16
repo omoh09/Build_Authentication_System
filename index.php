@@ -9,9 +9,9 @@
 		  <p class="lead">Come as you are, it is completely free.</p>
 		</div>
 	</div>
-	<div class="row col - 6">
-		 <a class="btn btn-outline-primary" href="Sign in">Sign in</a>
-		 <a class="btn btn-outline-primary" href="login.php">Register</a>
+	<div class="row col-6">
+		 <a class="btn btn-outline-primary" href="login.php">Sign in</a>
+		 <a class="btn btn-outline-primary" href="register.php">Register</a>
 	</div>
 </div>
 <?php include_once('lib/footer.php'); ?>
