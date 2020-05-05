@@ -1,47 +1,21 @@
 <?php include_once('lib/header.php');
+include_once('functions/alerts.php');
+include_once('functions/users.php');
+include_once('functions/redirect.php');
 
-if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
-    // redirect to dashboard
-    header("Location: dashboard.php");
+if(is_users_logged_in()){ 
+    redirect("dashboard.php");
 }
-// include_once('lib/header.php'); 
-
 ?>
-<div class="login">
-    <p>
-        <?php 
-            if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
-                echo "<p class='info'>" . $_SESSION['message'] . "</p>";
-                session_destroy();
-            }
-        ?>
-    </p>
+<div class="container">
+  <!--<div class="col - 10">
+  	<img  src="img/login.jpeg"/>
+  <</div>-->
+  <div class="row col-md-6">
     <form method="POST" action="processlogin.php">
-	 <fieldset>
-	  <legend><h1>Log In</h1></legend>
-      <p>
-        <?php 
-            if(isset($_SESSION['error']) && !empty($_SESSION['error'])){
-                echo "<p class='error'>" . $_SESSION['error'] . "</p>";
-
-                session_destroy();
-            }
-			
-            if(isset($_SESSION['emailerr']) && !empty($_SESSION['emailerr'])){
-                echo "<p class='error'>" . $_SESSION['emailerr'] . "</p>";
-                session_unset();
-            }
-            if(isset($_SESSION['emailerrfmt']) && !empty($_SESSION['emailerrfmt'])){
-                echo "<p class='error'>" . $_SESSION['emailerrfmt'] . "</p>";
-                session_unset();
-            }
-            if(isset($_SESSION['passworderr']) && !empty($_SESSION['passworderr'])){
-                echo "<p class='error'>" . $_SESSION['passworderr'] . "</p>";
-                session_unset();
-            }
-        ?>
-    </p>
-               
+	<div class="form-group">
+	 <h3>Log In</h3>
+       <?php prin_alert(); ?>
         <p>
             <label>Email</label><br />
             <input
@@ -52,19 +26,26 @@ if(isset($_SESSION['loggedIn']) && !empty($_SESSION['loggedIn'])){
                 }                
             ?>
 
-             type="text" name="email" placeholder="Email"  />
+             type="text" class="form-control"  name="email" placeholder="Email"  />
         </p>
 
         <p>
             <label>Password</label><br />
-            <input type="password" name="password" placeholder="Password"  />
+            <input type="password" class="form-control" name="password" placeholder="Password"  />
         </p>       
        
-       
         <p>
-            <button type="submit">Login</button>
+			<button type="submit" class="btn btn-primary">Login</button>
         </p>
-	  </fieldset>
+		<p>
+			<a href="forgot.php">Forget password</a><br />
+			<a href="register.php">dont have an account</a>
+		</p>
+    </div>
     </form>
+	
+  </div>
+  
+</div>
 
 <?php include_once('lib/footer.php'); ?>

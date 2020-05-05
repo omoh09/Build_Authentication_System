@@ -1,10 +1,9 @@
 <?php session_start();
-
-//Collecting the data
+require_once('functions/users.php');
+require_once('functions/redirect.php');
+require_once('functions/alerts.php');
 
 $errorCount = 0;
-
-//Verifying the data, validation
 
 $first_name = $_POST['first_name'] != "" ? $_POST['first_name'] :  $errorCount++;
 $last_name = $_POST['last_name'] != "" ? $_POST['last_name'] :  $errorCount++;
@@ -15,14 +14,7 @@ $gender = $_POST['gender'] != "" ? $_POST['gender'] :  $errorCount++;
 $designation = $_POST['designation'] != "" ? $_POST['designation'] :  $errorCount++;
 $department = $_POST['department'] != "" ? $_POST['department'] :  $errorCount++;
 $date = date("Y-m-d, h:i:sa");
-//$_SESSION['first_name'] = $first_name;
-//$_SESSION['last_name'] = $last_name;
-//$_SESSION['email'] = $email;
-//$_SESSION['gender'] = $gender;
-//$_SESSION['designation'] = $designation;
-//$_SESSION['department'] = $department;
 
-//$errorArray = [];
 $fnerrorempty = $fnerrorlen = $fnerrorstring = "";
 $lnerrorempty = $lnerrorlen = $lnerrorlenstr = "";
 $emailerrempty = $emailerrlen = $emailerrfmt = "";
@@ -35,7 +27,6 @@ if($first_name == " "){
 	$fnerrorlen = "Firstname must be greater than 2";
 	$errorCount++;
 }else
-//if(!empty($first_name) && is_numeric($first_name) && ctype_alnum($first_name)){
 if(!empty($first_name) && preg_match("/^[a-zA-Z]+$/", $first_name) === 0){
 	$fnerrorstring = "Firstname requires letters  alone";
 	$errorCount++;
@@ -50,7 +41,6 @@ if($last_name == " "){
 	$lnerrorlen = "lasttname must be greater than 2";
 	$errorCount++;
 }else
-//if(!empty($last_name) && is_numeric($last_name)  && ctype_alnum($first_name)){
 if(!empty($last_name) && preg_match("/^[a-zA-Z]+$/", $last_name) === 0){
 	$lnerrorlenstr = "lasttname requires string alone";
 	$errorCount++;
@@ -99,14 +89,6 @@ if(empty($department)){
 
 if($errorCount > 0){
 
-    /* $session_error = "You have " . $errorCount . " error";
-    
-    if($errorCount > 1) {        
-        $session_error .= "s";
-    }
-
-    $session_error .=   " in your form submission";
-    $_SESSION["error"] = $session_error ;*/
 	$_SESSION["fnerrorempty"] = $fnerrorempty;
 	$_SESSION["fnerrorlen"] = $fnerrorlen ;
 	$_SESSION["fnerrorstring"] = $fnerrorstring;
@@ -126,15 +108,11 @@ if($errorCount > 0){
 	$_SESSION["designitureerr"] = $designitureerr;
 	
 	$_SESSION["depterr"] = $depterr;
-    header("Location: register.php");
+	redirect("register.php");
 
 }else{
-
-    //count all users
-    $allUsers = scandir("db/users/"); //return @array (2 filled)
-
+	$allUsers = scandir("db/users/"); //return @array (2 filled)
     $countAllUsers = count($allUsers);
-
     $newUserId = ($countAllUsers-1);
 
     $userObject = [
@@ -149,22 +127,16 @@ if($errorCount > 0){
 		'reg_date' => $date
     ];
 
-    //Check if the user already exists.
- 
-    for ($counter = 0; $counter < $countAllUsers ; $counter++) {
-        
-        $currentUser = $allUsers[$counter];
-
-        if($currentUser == $email . ".json"){
-            $_SESSION["error"] = "Registration Failed, User already exits ";
-            header("Location: register.php");
+ 	$userExist = finduser($email);
+    
+        if($userExist){
+			set_alert('error',"<p class='alert alert-danger'>Registration Failed, User already exits </p>");
+            redirect("register.php");
             die();
         }
         
-    }
-    //save in the database;
-    file_put_contents("db/users/". $email . ".json", json_encode($userObject));
-    $_SESSION["message"] = "Registration Successful, you can now login " . $first_name;
-    header("Location: login.php");
+	save_user($userObject);
+	set_alert('message',"<p class='alert alert-success'>Registration Successful, you can now login</p>");
+    redirect("login.php");
 }
 
